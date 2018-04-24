@@ -1,6 +1,22 @@
 import sys
 import StringIO
 import contextlib
+import os
+
+def get_indention(string):
+    parts = string.split("\n")
+    line = parts[len(parts) - 1]
+    return len(line)
+
+def remove_indent(code, indent):
+    lines = code.split("\n")
+    for i in range(len(lines)):
+        lines[i] = lines[i][indent:]
+    code = ""
+    for line in lines:
+        code += line
+        code += "\n"
+    return code
 
 @contextlib.contextmanager
 def stdoutIO(stdout=None):
@@ -16,13 +32,19 @@ def process(file_name):
     with open(file_name, "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
+        # Gets the tag indent
+        indent = get_indention(parts[0])
         # Gets the code
         code = parts[1].split("#>")[0]
+        # Removes the indent
+        new_code = remove_indent(code, indent)
         # Executes the code and gets the output
         with stdoutIO() as s:
-            exec(code)
+            exec(new_code)
         # Prints the new content with code replaced
         cont = cont.replace("<#" + code + "#>", s.getvalue())
         return cont
 
+
 print(process("example/example.html"))
+
