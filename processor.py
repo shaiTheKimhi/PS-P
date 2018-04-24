@@ -11,20 +11,18 @@ def stdoutIO(stdout=None):
     yield stdout
     sys.stdout = old
 
-code = """
-print('hello')
-"""
-with stdoutIO() as s:
-    exec(code)
-
-print ("out:"+s.getvalue())
 
 def process(file_name):
     with open(file_name, "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
+        # Gets the code
         code = parts[1].split("#>")[0]
+        # Executes the code and gets the output
         with stdoutIO() as s:
             exec(code)
-        # TODO : add code to source file
-        
+        # Prints the new content with code replaced
+        cont = cont.replace("<#" + code + "#>", s.getvalue())
+        return cont
+
+print(process("example/example.html"))
