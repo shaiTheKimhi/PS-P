@@ -29,7 +29,12 @@ def stdoutIO(stdout=None):
 
 
 def process(file_name):
-    with open(file_name, "a+") as file:
+    parts = file_name.split("/")
+    path = ""
+    for i in parts[:-1]:
+        path += i
+    os.chdir("example")
+    with open(parts[-1], "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
         # Gets the tag indent
