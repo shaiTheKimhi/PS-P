@@ -28,7 +28,7 @@ def stdoutIO(stdout=None):
     sys.stdout = old
 
 
-def process(file_name):
+def process(file_name, parameters):
     parts = file_name.split("/")
     path = ""
     for i in parts[:-1]:

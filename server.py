@@ -44,13 +44,26 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def handleF(self, path):
         path, params = self.get_parameters(path)
         print path
+        # Sending response
+        self.send_response(200)
         if("html" in path.split(".")[1]):
-            st = processor.process(path)
+            st = processor.process(path, params)
+            self.send_header("Content-type", "text/html")
+        elif("jpg" in path.split(".")[1].lower()):
+            with open(path, "rb") as file:
+                st = file.read()
+            self.send_header("Content-type", "image/jpeg")
+        elif("png" in path.split(".")[1].lower()):
+            with open(path, "rb") as file:
+                st = file.read()
+            self.send_header("Content-type", "image/png")
+        elif(path == "close" or path == "exit" or path == "stop"):
+            raise KeyboardInterrupt()
         else:
             with open(path, "r") as file:
                 st = file.read()
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        
+        
         self.end_headers()
         self.wfile.write(st)
         #self.wfile.write("You enetered path: " + path +" and parameters: " + json.dumps(params))
