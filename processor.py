@@ -40,18 +40,20 @@ def process(file_name):
         parts = cont.split("<#")
         # Gets the tag indent
         indent = get_indention(parts[0])
-        # Gets the code
-        code = parts[1].split("#>")[0]
-        # Removes the indent
-        new_code = remove_indent(code, indent)
-        # Executes the code and gets the output
-        with stdoutIO() as s:
-            exec(new_code)
-        # Prints the new content with code replaced
-        cont = cont.replace("<#" + code + "#>", s.getvalue())
+        print(len(parts))
+        for i in range(1, len(parts), 1):
+            # Gets the code
+            code = parts[i].split("#>")[0]
+            # Removes the indent
+            new_code = remove_indent(code, indent)
+            # Executes the code and gets the output
+            with stdoutIO() as s:
+                exec(new_code)
+            # Prints the new content with code replaced
+            cont = cont.replace("<#" + code + "#>", s.getvalue())
         os.chdir(origin)
         return cont
 
 
-#print(process("example/example.html"))
+#(process("example/example.html"))
 
