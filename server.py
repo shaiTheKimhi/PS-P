@@ -20,6 +20,10 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         #This is the general handler for GET request
         self.handleF(self.path)
         pass
+    def do_POST(self):
+        #This is the general handler for POST requests
+        self.handle(self.path)
+        pass
 
     def get_parameters(self, path):
         parts = path.split("/", 1)
