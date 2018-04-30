@@ -33,7 +33,8 @@ def process(file_name):
     path = ""
     for i in parts[:-1]:
         path += i
-    os.chdir("example")
+    origin = os.getcwd()
+    os.chdir(path)
     with open(parts[-1], "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
@@ -48,8 +49,9 @@ def process(file_name):
             exec(new_code)
         # Prints the new content with code replaced
         cont = cont.replace("<#" + code + "#>", s.getvalue())
+        os.chdir(origin)
         return cont
 
 
-print(process("example/example.html"))
+#print(process("example/example.html"))
 
