@@ -3,13 +3,19 @@ import BaseHTTPServer
 import socket
 import json
 import processor
-
+import sys
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
 
 HOST_NAME = ""
-PORT_NUMBER = 80
+PORT_NUMBER = 8080
+for arg in sys.argv:
+    try:
+        PORT_NUMBER = int(arg)
+        break
+    except:
+        PORT_NUMBER = 8080
 
 class handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(self, s):
@@ -48,9 +54,16 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def handleF(self, path):
         path, params = self.get_parameters(path)
         print path
-        # Sending response
-        self.send_response(200)
-        if("html" in path.split(".")[1]):
+        try:
+            f = open(path)
+            # Sending response
+            self.send_response(200)
+        except:
+            self.send_response(404)
+            with open("404.html") as file:
+                self.wfile.write(file.read())
+            return
+        if("psp" in path.split(".")[1]):
             st = processor.process(path, params)
             self.send_header("Content-type", "text/html")
         elif("jpg" in path.split(".")[1].lower()):
@@ -66,17 +79,18 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         else:
             with open(path, "r") as file:
                 st = file.read()
+            self.send_header("Content-type", "text/html")
         
         
         self.end_headers()
         self.wfile.write(st)
         #self.wfile.write("You enetered path: " + path +" and parameters: " + json.dumps(params))
 
-if __name__ == "__main__":
+def run_server():
     server_class = BaseHTTPServer.HTTPServer
-    httpd = server_class(('', 8080), handler)
+    httpd = server_class(('', PORT_NUMBER), handler)
     try:
-        print("Server running on: 8080")
+        print("PSAP Running on:" + str(PORT_NUMBER))
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass
