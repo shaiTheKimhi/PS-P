@@ -4,8 +4,9 @@
         <h1>
         <#
         import os
+        import json
         for i in range(5):
-            print("hello")
+            print(json.dumps(request.get))
             print("<br/>")
         print(os.listdir(os.getcwd()))
         #>

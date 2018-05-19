@@ -2,6 +2,8 @@ import sys
 import StringIO
 import contextlib
 import os
+import server
+import json
 
 def get_indention(string):
     parts = string.split("\n")
@@ -28,19 +30,21 @@ def stdoutIO(stdout=None):
     sys.stdout = old
 
 
-def process(file_name, parameters):
-    parts = file_name.split("/")
+def process(file_name, parameters, request):
+    parts = (server.SOURCE.split("\\")[-1] + file_name).split("\\")
     path = ""
     for i in parts[:-1]:
         path += i
+        path += "\\"
     origin = os.getcwd()
-    os.chdir(path)
+    print("enter directory:" + json.dumps(parts))
+    if(path != ""):
+        os.chdir(path)
     with open(parts[-1], "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
         # Gets the tag indent
         indent = get_indention(parts[0])
-        print(len(parts))
         for i in range(1, len(parts), 1):
             # Gets the code
             code = parts[i].split("#>")[0]

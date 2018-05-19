@@ -4,12 +4,14 @@ import socket
 import json
 import processor
 import sys
+import urlparse
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
 
 HOST_NAME = ""
 PORT_NUMBER = 8080
+SOURCE = ""
 for arg in sys.argv:
     try:
         PORT_NUMBER = int(arg)
@@ -24,11 +26,11 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.end_headers()
     def do_GET(self):
         #This is the general handler for GET request
-        self.handleF(self.path)
+        self.handleF()
         pass
     def do_POST(self):
         #This is the general handler for POST requests
-        self.handle(self.path)
+        self.handleF()
         pass
 
     def get_parameters(self, path):
@@ -51,9 +53,12 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
             return last, None
 
 
-    def handleF(self, path):
-        path, params = self.get_parameters(path)
-        print path
+    def handleF(self):
+        path, params = self.get_parameters(self.path)
+        if(not ".ico" in path):
+            path = SOURCE + path
+        #print(path)
+        req = request("GET", self)
         try:
             f = open(path)
             # Sending response
@@ -64,7 +69,7 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.wfile.write(file.read())
             return
         if("psp" in path.split(".")[1]):
-            st = processor.process(path, params)
+            st = processor.process(path, params, req)
             self.send_header("Content-type", "text/html")
         elif("jpg" in path.split(".")[1].lower()):
             with open(path, "rb") as file:
@@ -96,3 +101,25 @@ def run_server():
         pass
     httpd.server_close()
     
+
+class request:
+    def __init__(self, method, req):
+        if(method == "POST"):
+            self.method = "POST"
+            parsed = urlparse.urlparse(req.path)
+            self.post = urlparse.parse_qs(parsed.query)
+            self.get = None
+            k = self.post.keys()
+            for key in k:
+                self.post[key] = self.post[key][0]
+        else:
+            self.method = "GET"
+            parsed = urlparse.urlparse(req.path)
+            self.get = urlparse.parse_qs(parsed.query)
+            self.post = None
+            k = self.get.keys()
+            for key in k:
+                self.get[key] = self.get[key][0]
+            
+    
+            
