@@ -10,7 +10,7 @@ import urlparse
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
 
-HOST_NAME = "localhost"
+HOST_NAME = ""
 PORT_NUMBER = 8080
 SOURCE = ""
 for arg in sys.argv:
