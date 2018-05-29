@@ -10,7 +10,7 @@ import urlparse
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
 
-HOST_NAME = ""
+HOST_NAME = "localhost"
 PORT_NUMBER = 8080
 SOURCE = ""
 for arg in sys.argv:
@@ -121,6 +121,3 @@ class request:
             k = self.get.keys()
             for key in k:
                 self.get[key] = self.get[key][0]
-            
-    
-            
