@@ -1,5 +1,5 @@
 import sys
-import StringIO
+import io
 import contextlib
 import os
 import server
@@ -24,7 +24,7 @@ def remove_indent(code, indent):
 def stdoutIO(stdout=None):
     old = sys.stdout
     if stdout is None:
-        stdout = StringIO.StringIO()
+        stdout = io.StringIO.StringIO()
     sys.stdout = stdout
     yield stdout
     sys.stdout = old

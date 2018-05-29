@@ -5,6 +5,7 @@ import json
 import processor
 import sys
 import urlparse
+
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
@@ -25,8 +26,8 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
     def do_GET(self):
-        #This is the general handler for GET request
-        self.handleF()
+        #This is the general handler for GET requests
+        self.handleF()	
         pass
     def do_POST(self):
         #This is the general handler for POST requests

@@ -1,0 +1,11 @@
+{
+	"version": 3,
+	"file": "K:/Kdocuments/python_projects/PSAP/example/__javascript__/example.mod.js",
+	"sources": [
+		"K:/Kdocuments/python_projects/PSAP/example/example.py"
+	],
+	"sourcesContent": [
+		"from itertools import chain\n\ndef greet (self):\n    self.planet = self.planets [int (Math.random () * len (self.planets))]\n    document.getElementById ('greet') .innerHTML = 'Hello {}'.format (self.planet [0])\n            \ndef explain (self):\n    document.getElementById ('explain').innerHTML = \"123\""
+	],
+	"mappings": "AAAA;AAAA;AAAA;AAEA;AACA;AACA;AAAA;AAEA;AACA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA"
+}
