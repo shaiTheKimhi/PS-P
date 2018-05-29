@@ -121,3 +121,4 @@ class request:
             k = self.get.keys()
             for key in k:
                 self.get[key] = self.get[key][0]
+            
