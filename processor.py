@@ -33,7 +33,7 @@ def stdoutIO(stdout=None):
 
 def process(file_name, parameters, request):
     parts, path, origin = move_to(file_name)
-    with open(parts[-1], "a+") as file:
+    with open(file_name.split("/")[-1], "a+") as file:
         cont = file.read()
         parts = cont.split("<#")
         # Gets the tag indent
@@ -79,6 +79,7 @@ def process_transcrypt(content):
 def move_to(file_name):
     #parts = (server.SOURCE.split("\\")[-1] + file_name).split("\\")
     parts = file_name.split("/")
+    parts = server.SOURCE.split("\\") + parts
     path = ""
     for i in parts[:-1]:
         path += i
@@ -87,7 +88,4 @@ def move_to(file_name):
     print("enter directory:" + path)
     if(path != ""):
         os.chdir(path)
-    #REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    print os.getcwd()
-    print os.listdir(os.getcwd())
     return parts, path, origin
