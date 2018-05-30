@@ -5,6 +5,8 @@ import json
 import processor
 import sys
 import urlparse
+import os
+
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
@@ -25,8 +27,8 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
     def do_GET(self):
-        #This is the general handler for GET request
-        self.handleF()
+        #This is the general handler for GET requests
+        self.handleF()	
         pass
     def do_POST(self):
         #This is the general handler for POST requests
@@ -64,9 +66,10 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
             # Sending response
             self.send_response(200)
         except:
-            self.send_response(404)
-            with open("404.html") as file:
+            self.send_response(200)
+            with open(os.getcwd() + "\\404.html") as file:
                 self.wfile.write(file.read())
+                print file.read()
             return
         if("psp" in path.split(".")[1]):
             st = processor.process(path, params, req)
@@ -94,11 +97,8 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
 def run_server():
     server_class = BaseHTTPServer.HTTPServer
     httpd = server_class(('', PORT_NUMBER), handler)
-    try:
-        print("PSAP Running on:" + str(PORT_NUMBER))
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
+    print("PSAP Running on:" + str(PORT_NUMBER))
+    httpd.serve_forever()
     httpd.server_close()
     
 
@@ -108,6 +108,7 @@ class request:
             self.method = "POST"
             parsed = urlparse.urlparse(req.path)
             self.post = urlparse.parse_qs(parsed.query)
+            print(self.post)
             self.get = None
             k = self.post.keys()
             for key in k:
@@ -120,6 +121,4 @@ class request:
             k = self.get.keys()
             for key in k:
                 self.get[key] = self.get[key][0]
-            
-    
             
