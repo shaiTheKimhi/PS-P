@@ -55,7 +55,7 @@ def process(file_name, parameters, request):
 
 def process_transcrypt(content):
     parts = content.split("<transcrypt")
-    cont = ""
+    cont = parts[0]
     for i in range(1, len(parts)):
         inner = parts[i].split("/>")[0]
         #Getting file source

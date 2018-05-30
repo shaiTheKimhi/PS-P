@@ -1,8 +1,7 @@
 <html>
     <head></head>
     <body>
-    <transcrypt src='example'/>
-        <h1>
+    <h1>
         <#
         import os
         import json
@@ -13,6 +12,7 @@
 		
         #>
         </h1>
+    <transcrypt src='example'/>
         <br/>
         <img src = '48d4bc3b-1fb9-42cb-a6fa-adf42fe7e79e.jpg'/>
 		<script type='text/javascript'>

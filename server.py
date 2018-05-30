@@ -97,11 +97,8 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
 def run_server():
     server_class = BaseHTTPServer.HTTPServer
     httpd = server_class(('', PORT_NUMBER), handler)
-    try:
-        print("PSAP Running on:" + str(PORT_NUMBER))
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
+    print("PSAP Running on:" + str(PORT_NUMBER))
+    httpd.serve_forever()
     httpd.server_close()
     
 
