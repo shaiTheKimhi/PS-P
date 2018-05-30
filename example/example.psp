@@ -1,6 +1,7 @@
 <html>
     <head></head>
     <body>
+    <transcrypt src='example'/>
         <h1>
         <#
         import os
@@ -9,10 +10,13 @@
             print(json.dumps(request.get))
             print("<br/>")
         print(os.listdir(os.getcwd()))
+		
         #>
         </h1>
         <br/>
         <img src = '48d4bc3b-1fb9-42cb-a6fa-adf42fe7e79e.jpg'/>
-		
+		<script type='text/javascript'>
+        window["example"].f();
+        </script>
     </body>
 </html>

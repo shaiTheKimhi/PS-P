@@ -5,6 +5,7 @@ import json
 import processor
 import sys
 import urlparse
+import os
 
 '''import admin
 if not admin.isUserAdmin():
@@ -65,9 +66,10 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
             # Sending response
             self.send_response(200)
         except:
-            self.send_response(404)
-            with open("404.html") as file:
+            self.send_response(200)
+            with open(os.getcwd() + "\\404.html") as file:
                 self.wfile.write(file.read())
+                print file.read()
             return
         if("psp" in path.split(".")[1]):
             st = processor.process(path, params, req)
@@ -109,6 +111,7 @@ class request:
             self.method = "POST"
             parsed = urlparse.urlparse(req.path)
             self.post = urlparse.parse_qs(parsed.query)
+            print(self.post)
             self.get = None
             k = self.post.keys()
             for key in k:
