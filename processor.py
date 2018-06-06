@@ -83,7 +83,6 @@ def process_transcrypt(content):
 def move_to(file_name):
     #parts = (server.SOURCE.split("\\")[-1] + file_name).split("\\")
     parts = file_name.split("/")
-    parts = server.SOURCE.split("\\") + parts
     path = ""
     for i in parts[:-1]:
         path += i

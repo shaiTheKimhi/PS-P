@@ -1,5 +1,4 @@
 import time
-import BaseHTTPServer
 import socket
 import json
 import processor
@@ -7,6 +6,12 @@ import sys
 import urlparse
 import os
 
+try:
+    import BaseHTTPServer
+except:
+    os.system("pip install BaseHTTPServer")
+    time.sleep(1)
+    import BaseHTTPServer
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''

@@ -1,7 +1,15 @@
-from appJar import gui
 from threading import Thread
+from time import sleep
 import server
 import os
+
+try:
+    from appJar import gui
+except:
+    os.system("pip install appJar")
+    sleep(1)
+    from appJar import gui
+    
 
 def start(btn):
     port = app.getEntry("port")
