@@ -1,2 +1,2 @@
-start.exe
+python app.py
 exit

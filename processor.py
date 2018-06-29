@@ -48,6 +48,7 @@ def process(file_name, parameters, request):
             new_code = remove_indent(code, indent)
             new_code += "print(\"" + item[1].replace("\n", "").replace("\"","'") + "\")"
             # Executes the code and gets the output
+            print(os.getcwd())
             with stdoutIO() as s:
                 exec(new_code)
             # Prints the new content with code replaced

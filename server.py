@@ -19,6 +19,7 @@ if not admin.isUserAdmin():
 HOST_NAME = ""
 PORT_NUMBER = 8080
 SOURCE = ""
+START = os.getcwd()
 for arg in sys.argv:
     try:
         PORT_NUMBER = int(arg)
@@ -61,20 +62,18 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
 
     def handleF(self):
+        os.chdir(START)
         path, params = self.get_parameters(self.path)
         if(not ".ico" in path):
             path = SOURCE + path
         #print(path)
         req = request("GET", self)
-        try:
-            f = open(path)
-            # Sending response
-            self.send_response(200)
-        except:
-            self.send_response(200)
-            with open(os.getcwd() + "\\404.html") as file:
+        self.send_response(200)
+        if(not os.path.isfile(path)):
+            with open(os.getcwd()+"//404.html") as file:
+                print("404 not found!")
                 self.wfile.write(file.read())
-                print file.read()
+            self.send_header("Content-type","text/html")
             return
         if("psp" in path.split(".")[1]):
             st = processor.process(path, params, req)

@@ -1,0 +1,23 @@
+<#
+REPORT_SIZE = 200
+SECOND_TARIFF = 0.01
+import database
+if(request.get != None and "client" in request.get.keys()):
+    client = request.get["client"]
+    bought, time = database.check_park(client)
+    #print(time)
+    if(not bought):
+        if(time == None or time > 20000):
+            money = REPORT_SIZE
+            desc = "Did not pay for parking"
+        else:
+            money = time * SECOND_TARIFF
+            desc = "Time of purchase passed"
+        database.add_report(client, money, desc)
+        print("no")
+    else:
+        print("yes")
+            
+else:
+    print("you need to enter license plate id")
+#>
