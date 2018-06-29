@@ -31,6 +31,7 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(self, s):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
+        s.send_header("Access-Control-Allow-Origin", "*")
         s.end_headers()
     def do_GET(self):
         #This is the general handler for GET requests
@@ -60,7 +61,7 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         else:
             return last, None
 
-
+    
     def handleF(self):
         os.chdir(START)
         path, params = self.get_parameters(self.path)
@@ -69,6 +70,7 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         #print(path)
         req = request("GET", self)
         self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
         if(not os.path.isfile(path)):
             with open(os.getcwd()+"//404.html") as file:
                 print("404 not found!")
