@@ -1,7 +1,0 @@
-<#
-import database
-if(request.get != None and "table" in request.get.keys()):
-    print(database.get_table_json(request.get["table"]))
-else:
-    print("you ought to choose table")
-#>
