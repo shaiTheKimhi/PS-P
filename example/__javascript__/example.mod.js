@@ -1,7 +1,8 @@
 	(function () {
 		var __name__ = '__main__';
 		var f = function () {
-			alert ('123');
+			var a = prompt ('enter message');
+			alert (a);
 		};
 		__pragma__ ('<all>')
 			__all__.__name__ = __name__;

@@ -1,2 +1,3 @@
 def f():
-    alert("123")
+    a = prompt("enter message")
+    alert(a)
