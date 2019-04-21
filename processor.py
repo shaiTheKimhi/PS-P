@@ -19,6 +19,7 @@ def remove_indent(code, indent):
     for line in lines:
         code += line
         code += "\n"
+    code = code[:-1]
     return code
 
 @contextlib.contextmanager
@@ -40,14 +41,18 @@ def process(file_name, parameters, request):
         indent = get_indention(parts[0])
         for i in range(1, len(parts), 1):
             # Gets the code
-            code = parts[i].split("#>")[0]
+            val = parts[i]
+            item = parts[i].split("#>")
+            code = item[0]
             # Removes the indent
             new_code = remove_indent(code, indent)
+            new_code += "print(\"" + item[1].replace("\n", "").replace("\"","'") + "\")"
             # Executes the code and gets the output
+            print(os.getcwd())
             with stdoutIO() as s:
                 exec(new_code)
             # Prints the new content with code replaced
-            cont = cont.replace("<#" + code + "#>", s.getvalue())
+            cont = cont.replace("<#" + val, s.getvalue())
         cont = process_transcrypt(cont)
         os.chdir(origin)
         return cont

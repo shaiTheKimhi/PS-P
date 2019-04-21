@@ -1,7 +1,16 @@
-from appJar import gui
 from threading import Thread
+from time import sleep
 import server
 import os
+import sys
+
+try:
+    from appJar import gui
+except:
+    os.system("pip install appJar")
+    sleep(1)
+    from appJar import gui
+    
 
 def start(btn):
     port = app.getEntry("port")
@@ -19,7 +28,7 @@ def start(btn):
     new_app(port)
     
 def stop_server(btn):
-    raise KeyboardInterrupt()
+    sys.exit()
 #TODO : Add Image for Logo on app background
 def new_app(port):
     logo = gui("PSAP")

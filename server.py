@@ -1,5 +1,4 @@
 import time
-import BaseHTTPServer
 import socket
 import json
 import processor
@@ -7,6 +6,12 @@ import sys
 import urlparse
 import os
 
+try:
+    import BaseHTTPServer
+except:
+    os.system("pip install BaseHTTPServer")
+    time.sleep(1)
+    import BaseHTTPServer
 '''import admin
 if not admin.isUserAdmin():
     admin.runAsAdmin()'''
@@ -14,6 +19,7 @@ if not admin.isUserAdmin():
 HOST_NAME = ""
 PORT_NUMBER = 8080
 SOURCE = ""
+START = os.getcwd()
 for arg in sys.argv:
     try:
         PORT_NUMBER = int(arg)
@@ -22,10 +28,11 @@ for arg in sys.argv:
         PORT_NUMBER = 8080
 
 class handler(BaseHTTPServer.BaseHTTPRequestHandler):
-    def do_HEAD(self, s):
+    '''def do_HEAD(self, s):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
-        s.end_headers()
+        s.send_header("Access-Control-Allow-Origin", "*")
+        s.end_headers()'''
     def do_GET(self):
         #This is the general handler for GET requests
         self.handleF()	
@@ -40,7 +47,7 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         l = len(parts)
         if(l <= 1):
             return None, None
-        last = parts[len(parts) - 1]
+        last = parts[-1]
         arguments = last.split("?", 1)
         last = arguments[0]
         if(len(arguments) > 1):
@@ -54,23 +61,29 @@ class handler(BaseHTTPServer.BaseHTTPRequestHandler):
         else:
             return last, None
 
-
+    
     def handleF(self):
+        #function need to be changed for 404 to be returned properly
+        os.chdir(START)
         path, params = self.get_parameters(self.path)
         if(not ".ico" in path):
             path = SOURCE + path
-        #print(path)
-        req = request("GET", self)
-        try:
-            f = open(path)
-            # Sending response
-            self.send_response(200)
-        except:
-            self.send_response(200)
-            with open(os.getcwd() + "\\404.html") as file:
+        
+        if((path == "" or "." not in path[-4:-1]) and os.path.isfile(path + "index.psp")):
+            path += "index.psp"
+            
+        if(not os.path.isfile(path)):
+            with open(os.getcwd()+"//404.html") as file:
+                print("404 not found!")
+                self.send_response(200)
                 self.wfile.write(file.read())
-                print file.read()
+            self.send_header("Content-type","text/html")
             return
+            
+        req = request("GET", self)
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        
         if("psp" in path.split(".")[1]):
             st = processor.process(path, params, req)
             self.send_header("Content-type", "text/html")
